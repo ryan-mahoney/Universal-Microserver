@@ -36,6 +36,13 @@ RUN npm install -g nodemon@1.10.0
 RUN npm install -g babel-cli@6.16.0
 RUN npm install -g babel-preset-es2015@6.16.0
 RUN npm install -g babel-preset-stage-2@6.17.0
+RUN npm install -g babel-plugin-transform-runtime@6.15.0
+RUN npm install -g babel-preset-react@6.16.0
+RUN npm install -g babel-preset-stage-0@6.16.0
+RUN npm install -g babel-register@6.16.3
+
+
+
 COPY config/node_ctl.sh /root/node_ctl.sh
 
 # nginx
