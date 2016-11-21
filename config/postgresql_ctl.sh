@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# this script is run by Supervisor to start PostgreSQL in foreground mode
+# wait for init to finish
+sleep 5
 
+# this script is run by Supervisor to start PostgreSQL in foreground mode
 function shutdown()
 {
     echo "Shutting down PostgreSQL"
@@ -29,9 +31,5 @@ fi
 
 chmod -R 0700 /media/persistent/pgsql/data
 
-# app logging
-mkdir -p /media/persistent/log
-chmod -R 0777 /media/persistent/log
-
 # run postgres server as postgres user
-runuser postgres -c '/usr/lib/postgresql/9.6/bin/postgres -D "/media/persistent/pgsql/data" |& /usr/bin/rotatelogs -n 3 /media/persistent/log/pgsql.log 86400'
+runuser postgres -c '/usr/lib/postgresql/9.6/bin/postgres -D "/media/persistent/pgsql/data"'

@@ -3,12 +3,16 @@ FROM ubuntu:16.04
 RUN apt-get update
 
 # basic packages
-RUN apt-get install -y gnupg net-tools wget apache2-utils
+RUN apt-get install -y gnupg net-tools wget
 
 # php
 RUN apt-get install -y php php-fpm php-pgsql
 RUN mkdir /run/php
 COPY config/fpm.sh /root/fpm.sh
+RUN echo "php_admin_flag[log_errors] = on" >> /etc/php/7.0/fpm/pool.d/www.conf
+RUN echo "catch_workers_output = yes" >> /etc/php/7.0/fpm/pool.d/www.conf
+RUN echo "php_admin_value[error_log] = /media/persistent/log/fpm.err.log" >> /etc/php/7.0/fpm/pool.d/www.conf
+RUN echo "clear_env = no" >> /etc/php/7.0/fpm/pool.d/www.conf
 
 # postgresql install
 COPY config/postgresql.asc /root/postgresql.asc
@@ -40,9 +44,6 @@ RUN npm install -g babel-plugin-transform-runtime@6.15.0
 RUN npm install -g babel-preset-react@6.16.0
 RUN npm install -g babel-preset-stage-0@6.16.0
 RUN npm install -g babel-register@6.16.3
-
-
-
 COPY config/node_ctl.sh /root/node_ctl.sh
 
 # nginx
@@ -50,7 +51,10 @@ RUN apt-get install -y nginx nginx-extras
 COPY config/nginx-site.conf /etc/nginx/sites-available/default
 COPY config/nginx.sh /root/nginx.sh
 
+# init
+COPY config/init.sh /root/init.sh
+
 EXPOSE 80
 EXPOSE 443
 
-ENTRYPOINT ["/usr/bin/supervisord", "--nodaemon"]
+ENTRYPOINT ["/usr/bin/supervisord", "--nodaemon", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
