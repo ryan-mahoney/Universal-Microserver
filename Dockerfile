@@ -57,4 +57,4 @@ COPY config/init.sh /root/init.sh
 EXPOSE 80
 EXPOSE 443
 
-ENTRYPOINT ["/usr/bin/supervisord", "--nodaemon", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
