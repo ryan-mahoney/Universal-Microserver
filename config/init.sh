@@ -2,6 +2,8 @@
 
 # add postgres user to the www-data group
 usermod -a -G www-data postgres
+chown -R postgres /media/persistent/pgsql
+chgrp -R postgres /media/persistent/pgsql
 
 # initialize logging directory
 mkdir -p /media
